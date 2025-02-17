@@ -9,7 +9,7 @@ const timelineRouter = require('./routers/timeline.router');
 const dotenv = require('dotenv');
 dotenv.config();
 // import { dbConnect } from './configs/database.config'
-const dbConnect = require('./configs/database.config');
+const { dbConnect } = require('./configs/database.config');
 // import timelineRouter from './routers/timeline.router';
 console.log(process.env.AWS_S3_BUCKET_NAME);
 dbConnect(); //后端运行时会尝试连接数据库
