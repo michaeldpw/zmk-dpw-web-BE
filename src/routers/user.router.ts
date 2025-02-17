@@ -378,4 +378,5 @@ router.put("/update-password", verifyJWT, asyncHandler(
 
 
 
-export default router;
+// export default router;
+module.exports = router;

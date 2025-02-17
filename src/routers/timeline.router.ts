@@ -76,4 +76,5 @@ router.get("/", verifyJWT, asyncHandler(
 ));
 
 
-export default router;
+// export default router;
+module.exports = router;
