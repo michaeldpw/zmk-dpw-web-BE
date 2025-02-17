@@ -1,12 +1,13 @@
 
 import { Router } from "express";
-import jwt, { JwtPayload } from 'jsonwebtoken'
+import { JwtPayload } from 'jsonwebtoken'
+const jwt = require('jsonwebtoken');
 import { sample_users } from '../data';
-import asyncHandler from 'express-async-handler'
+const asyncHandler = require('express-async-handler')
 import { User, UserModel } from "../models/user.model";
 import { HTTP_BAD_REQUEST } from "../constants/http_status";
 import { SECRET_CODE } from "../constants/secret_code";
-import bcrypt from 'bcryptjs';
+// import bcrypt from 'bcryptjs';
 import { verifyJWT } from "../middleware/authMiddleware";
 
 const multer = require("multer");
@@ -80,7 +81,7 @@ router.post("/avatar", verifyJWT, upload.single("avatar"), asyncHandler(
 
 
 router.get("/seed", asyncHandler(
-    async (req, res) => {
+    async (req: any, res: any) => {
         console.log("seeding")
         const postCount = await UserModel.countDocuments();
         if (postCount > 0) {

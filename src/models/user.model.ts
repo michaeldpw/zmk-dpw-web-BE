@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
-import bcrypt from 'bcryptjs';
-import jwt from "jsonwebtoken";
+const bcrypt = require('bcryptjs');
+const jwt = require("jsonwebtoken");
 
 
 export interface User {

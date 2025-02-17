@@ -1,9 +1,9 @@
-import express from 'express'
-import cors from 'cors'
+const express = require('express');
+const cors = require('cors');
 import postRouter from './routers/post.router'
 import userRouter from './routers/user.router'
 
-import dotenv from 'dotenv';
+const dotenv = require('dotenv');
 dotenv.config();
 import { dbConnect } from './configs/database.config'
 import timelineRouter from './routers/timeline.router';

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import asyncHandler from 'express-async-handler'
+const asyncHandler = require('express-async-handler')
 import { PostModel } from "../models/post.model";
 import { sample_posts } from "../data";
 import { verifyJWT } from "../middleware/authMiddleware";
@@ -9,18 +9,18 @@ import { HTTP_BAD_REQUEST } from "../constants/http_status";
 
 const router = Router();
 
-router.get("/seed", asyncHandler(
-    async (req, res) => {
-        console.log("seeding")
-        const postCount = await PostModel.countDocuments();
-        if (postCount > 0) {
-            res.send("Posts have been created");
-            return;
-        }
-        await PostModel.create(sample_posts);
-        res.send("Seed is done!")
-    })
-)
+// router.get("/seed", asyncHandler(
+//     async (req, res) => {
+//         console.log("seeding")
+//         const postCount = await PostModel.countDocuments();
+//         if (postCount > 0) {
+//             res.send("Posts have been created");
+//             return;
+//         }
+//         await PostModel.create(sample_posts);
+//         res.send("Seed is done!")
+//     })
+// )
 
 router.post("/create", verifyJWT, asyncHandler(
     async (req: any, res: any) => {
@@ -90,7 +90,7 @@ router.get("/:postId", verifyJWT, asyncHandler(
 
 // 搜索单个帖子by search term
 router.get("/search/:searchTerm", asyncHandler(
-    async (req, res) => {
+    async (req: any, res: any) => {
         const searchRegex = new RegExp(req.params.searchTerm, 'i'); // i表示大小写均可
         const posts = await PostModel.find({ title: { $regex: searchRegex } }); // 根据帖子的标题搜索
         res.send(posts);

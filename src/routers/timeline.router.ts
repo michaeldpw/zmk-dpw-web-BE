@@ -1,4 +1,4 @@
-import asyncHandler from 'express-async-handler';
+const asyncHandler = require('express-async-handler');
 import { Router } from "express";
 import { verifyJWT } from "../middleware/authMiddleware";
 import { TimelineModel } from '../models/timeline.model';
@@ -65,7 +65,7 @@ router.post('/create', verifyJWT, upload.single("image"), asyncHandler(
 ));
 
 router.get("/", verifyJWT, asyncHandler(
-    async (req, res) => {
+    async (req: any, res: any) => {
         try {
             const timelines = await TimelineModel.find().sort({ date: 1 }); // Sort by date (oldest to newest)
             res.json({ success: true, timelines });
