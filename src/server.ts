@@ -11,7 +11,7 @@ dotenv.config();
 // import { dbConnect } from './configs/database.config'
 const { dbConnect } = require('./configs/database.config');
 // import timelineRouter from './routers/timeline.router';
-console.log(process.env.AWS_S3_BUCKET_NAME);
+
 dbConnect(); //后端运行时会尝试连接数据库
 
 const app = express();
@@ -21,6 +21,8 @@ app.use(cors({
     origin: ["http://localhost:4200"]
 }));
 app.use(express.json());
+
+console.log('aaa', typeof postRouter);
 
 app.use("/api/posts", postRouter);
 app.use("/api/users", userRouter);
