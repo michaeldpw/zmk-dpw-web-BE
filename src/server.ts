@@ -32,7 +32,7 @@ app.use("/api/timeline", timelineRouter);
 
 
 
-const port = process.env.PORT || 80;
+const port = process.env.PORT || 3000;
 console.log("port", port);
 app.listen(port, () => {
     console.log("Website served on http://localhost:" + port);
