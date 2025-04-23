@@ -3,7 +3,9 @@ const cors = require('cors');
 // import postRouter from './routers/post.router'
 const postRouter = require('./routers/post.router');
 // import userRouter from './routers/user.router'
-const userRouter = require('./routers/user.router')
+const userRouter = require('./routers/user.router');
+const commentRouter = require('./routers/comment.router');
+
 const timelineRouter = require('./routers/timeline.router');
 
 const dotenv = require('dotenv');
@@ -27,6 +29,8 @@ console.log('aaa', typeof postRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/users", userRouter);
 app.use("/api/timeline", timelineRouter);
+app.use("/api/comments", commentRouter);
+
 
 
 

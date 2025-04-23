@@ -4,6 +4,8 @@ import { PostModel } from "../models/post.model";
 import { sample_posts } from "../data";
 import { verifyJWT } from "../middleware/authMiddleware";
 import { HTTP_BAD_REQUEST } from "../constants/http_status";
+const Comment = require('../models/comment.model')
+
 
 
 
@@ -85,6 +87,85 @@ router.get("/:postId", verifyJWT, asyncHandler(
             return res.status(HTTP_BAD_REQUEST);
 
         }
+    }
+));
+
+router.get("/:postId/comments", verifyJWT, asyncHandler(
+    async (req, res) => {
+        const { postId } = req.params;
+        console.log(postId);
+        //获取所有评论，包括嵌套评论
+        const comments = await Comment.find({ post: postId })
+            .populate('author', 'avatarUrl nickName firstName lastName')
+            .populate('replyTo', 'avatarUrl nickName firstName lastName')
+            .sort({ createdAt: -1 })
+            .lean();
+
+        console.log(comments);
+
+        // 1. 把评论按 ID 映射起来，方便查找
+        const commentMap = {};
+        comments.forEach(comment => {
+            comment.replies = []; // 初始化 replies
+            commentMap[String(comment._id)] = comment;
+        });
+
+        const topLevel: any[] = [];
+
+        // 2. 构建嵌套结构
+        comments.forEach(comment => {
+            if (!comment.parentComment) {
+                topLevel.push(comment); // 一级评论
+            } else {
+                const parentIdStr = String(comment.parentComment);
+                const parentComment = commentMap[parentIdStr];
+
+                if (parentComment) {
+                    parentComment.replies.push(comment); // 成为父评论的子项
+                } else {
+                    topLevel.push(comment); // 数据异常时放到顶层
+                }
+            }
+        });
+
+        // 3. 返回最多两层的评论结构
+        res.json(topLevel);
+
+        // 递归构造嵌套结构
+        // const buildNestedComments = (parentId = null) => {
+        //     const nested = comments
+        //         .filter(comment => String(comment.parentComment) === String(parentId))
+        //         .sort((a: any, b: any) => {
+        //             const dateA = new Date(a.createdAt).getTime();
+        //             const dateB = new Date(b.createdAt).getTime();
+        //             return dateB - dateA; // 从新到旧排序
+        //         }) // 按时间从近到远排序
+        //         .map(comment => ({
+        //             ...comment,
+        //             replies: buildNestedComments(comment._id), // 递归子评论
+        //         }));
+
+        //     return nested;
+        // };
+
+        // res.json(buildNestedComments());
+        // 生成嵌套评论结构
+        // const buildNestedComments = (parentId = null) =>
+        //     comments
+        //         .filter(comment => String(comment.parentId) === String(parentId))
+        //         .map(comment => ({ ...comment, replies: buildNestedComments(comment._id) }));
+
+        // res.json(comments);
+        // .populate({
+        //     path: 'replies',
+        //     populate: {
+        //         path: 'replies',
+        //         populate: 'replies'
+        //     }
+        // })
+        //     .exec();
+
+        // res.json(comments);
     }
 ))
 
