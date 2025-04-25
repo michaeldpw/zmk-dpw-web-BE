@@ -13,7 +13,7 @@ dotenv.config();
 // import { dbConnect } from './configs/database.config'
 const { dbConnect } = require('./configs/database.config');
 // import timelineRouter from './routers/timeline.router';
-
+console.log('Mongo URI:', process.env.MONGODB_URI);
 dbConnect(); //后端运行时会尝试连接数据库
 
 const app = express();
