@@ -5,6 +5,8 @@ const postRouter = require('./routers/post.router');
 // import userRouter from './routers/user.router'
 const userRouter = require('./routers/user.router');
 const commentRouter = require('./routers/comment.router');
+const placeRouter = require('./routers/place.router');
+
 
 const timelineRouter = require('./routers/timeline.router');
 
@@ -25,6 +27,7 @@ app.use(cors({
 app.use(express.json());
 
 console.log('aaa', typeof postRouter);
+app.use('/api/place', placeRouter);
 
 app.use("/api/posts", postRouter);
 app.use("/api/users", userRouter);
